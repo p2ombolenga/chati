@@ -16,6 +16,8 @@ class MessageFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
+            'sender_id' => User::factory(),
+            'receiver_id' => 7,
             'message' => $this->faker->paragraph(),
             'image' => '/images/posts/flat.jpg',
         ];

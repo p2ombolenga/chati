@@ -13,7 +13,7 @@
           Set up a new account
     </div>
     <div class="m-2 lg:px-8 p-4 w-full  sm:w-2/3 mx-auto border border-gray-200 rounded-xl mt-2">
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             @csrf
             <label for="name">Names</label>
             <input type="text" name="name" id="name" placeholder="Enter your Names" value="{{ old('name') }}" class="px-4 py-2 w-full rounded-lg border border-gray-200 focus:border-gray-200 focus:ring focus:ring-sky-100">
@@ -25,9 +25,14 @@
             @error('username')
                 <p class="text-red-400 text-xs"> {{$message}} </p>
             @enderror
+            <label for="profile_picture">Photo</label>
+            <input type="file" name="profile_picture" id="profile_picture" class="px-4 py-2 w-full rounded-lg border border-gray-200 focus:border-gray-200 focus:ring focus:ring-sky-100">
+            @error('profile_picture')
+                <p class="text-red-400 text-xs"> {{$message}} </p>
+            @enderror
             <label for="email">Email</label>
             <input type="text" name="email" id="email" placeholder="Enter your Email" value="{{ old('email') }}" class="px-4 py-2 w-full rounded-lg border border-gray-200 focus:border-gray-200 focus:ring focus:ring-sky-100">
-            @error('email')
+            @error('email')create
                 <p class="text-red-400 text-xs"> {{$message}} </p>
             @enderror
             <label for="phone">Phone</label>

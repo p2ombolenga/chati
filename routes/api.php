@@ -17,4 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/home',[PostController::class,'index']);
+Route::get('/home',function(){
+    return 'hello';
+});
+Route::get('/register',[PostController::class,'index']);

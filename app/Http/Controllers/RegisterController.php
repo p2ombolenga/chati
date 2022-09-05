@@ -16,6 +16,7 @@ class RegisterController extends Controller
         $validated = request()->validate([
             'name' => 'required',
             'username' => 'required',
+            'profile_picture' => 'required|image',
             'email' => 'required|email|unique:users,email',
             'phone' => 'required|max:10',
             'gender' =>'required',
@@ -23,9 +24,15 @@ class RegisterController extends Controller
             'address' => 'required',
             'password' => 'required|confirmed'
         ]);
+        
+        $imagePath = request()->file('profile_picture');
+        $extension = $imagePath->getClientOriginalExtension();
+        $imageName = time().'.'.$extension;
+        $path = public_path('/images/profiles/');
+        $imagePath->move($path,$imageName);
 
         $validated['password'] = bcrypt(request('password'));
-
+        $validated['profile_picture'] = '/images/profiles/'.$imageName;
         $user = User::create($validated);
 
         auth()->login($user);

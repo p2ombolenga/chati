@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\RegisterController;
@@ -57,6 +58,8 @@ Route::middleware('auth')->group(function(){
     Route::get('/messages/{user:username}',[MessageController::class,'show']);
 
     Route::get('/profile', [UserController::class,'index']);
+
+    Route::get('/notifications',[NotificationController::class,'index']);
     
 
     Route::post('/logout',[SessionController::class,'destroy']);

@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File as FacadesFile;
 
 class PostController extends Controller
@@ -16,8 +19,9 @@ class PostController extends Controller
             }
         return view('home',['posts' => $posts->get()]);
     }
-
+    
     public function store(Request $request){
+    DB::transaction(function() use($request){
         if(!empty(request('body')) || !empty(request('image')) ){
 
             request()->validate(['image' => 'image']);
@@ -29,23 +33,28 @@ class PostController extends Controller
             $path = public_path('/images/posts/');
             $image->move($path,$imageName);
         }
-
             $post = new Post();
             
             $post->user_id = auth()->user()->id;
             $post->slug = bcrypt($request->body);
             $post->body = $request->body;
             $post->image = request()->has('image') ? '/images/posts/'.$imageName : NULL;
-
             $post->save();
-            return back();
-        
+            
+            Notification::create([
+                'user_id' => auth()->id(),
+                'post_id' => $post->id,
+                'notification' => ' created a post',
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+            
         }
         else{
             return back()->with('status','Attempting to submit an empty post');
         }
-        dd(auth()->user()->id);
-
+    });
+    return back();
     }
 
     public function destroy(Post $post){
